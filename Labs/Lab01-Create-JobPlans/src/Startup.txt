@@ -1,0 +1,7 @@
+Project_ID = db774201-b23c-4020-a4a5-5d62fd1b5de4
+IAM_API_Key = WQR1RcqoL2FiFFpwAG5rpgwQf7fpU9Bu_rSSn4Birrco
+
+GRPC_Host = 99e7d1a3-1f67-4252-8dd8-619ce4f92929.crkkivsd0vdrn0rdjn2g.lakehouse.appdomain.cloud
+GRPC_port = 31384
+
+
