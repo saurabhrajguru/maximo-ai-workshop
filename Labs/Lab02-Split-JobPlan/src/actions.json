@@ -1,0 +1,2412 @@
+{
+  "name": "get_jobplan-action",
+  "type": "action",
+  "valid": true,
+  "status": "Available",
+  "created": "2025-05-16T10:42:25.621Z",
+  "updated": "2025-05-23T13:54:01.000Z",
+  "language": "en",
+  "skill_id": "3a6eff0f-3f37-4611-bd59-0602fa3cdce0",
+  "workspace": {
+    "actions": [
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_470",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Enter job plan number ?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_470",
+            "next_step": "step_651"
+          },
+          {
+            "step": "step_651",
+            "context": {
+              "variables": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/get-jobplan",
+                "type": "integration_interaction",
+                "method": "GET",
+                "internal": {
+                  "spec_hash_id": "1a72c5ee4c72e418830e1cf92edb877ee68b454b697d7a45aa907d56681294b4",
+                  "match_scenario": 10,
+                  "catalog_item_id": "8a3af858-3a90-444f-96ab-4233f82e9101"
+                },
+                "request_mapping": {
+                  "query": [
+                    {
+                      "value": {
+                        "variable": "step_470"
+                      },
+                      "parameter": "jpnum"
+                    },
+                    {
+                      "value": {
+                        "scalar": "Active"
+                      },
+                      "parameter": "status"
+                    }
+                  ]
+                },
+                "result_variable": "step_651_result_3"
+              }
+            },
+            "variable": "step_651",
+            "next_step": "step_373"
+          },
+          {
+            "step": "step_373",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Job plan is not active. Please enter active job plan ."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_373",
+            "condition": {
+              "and": [
+                {
+                  "exists": {
+                    "variable": "step_470"
+                  }
+                },
+                {
+                  "not_matches": [
+                    {
+                      "variable": "step_651_result_3",
+                      "variable_path": "body.status"
+                    },
+                    {
+                      "scalar": "Active",
+                      "options": {
+                        "ignore_case": true
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "next_step": "step_419"
+          },
+          {
+            "step": "step_419",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "**Job plan number** : "
+                          },
+                          {
+                            "variable": "step_651_result_3",
+                            "variable_path": "body.jpnum"
+                          },
+                          {
+                            "scalar": "\n\n**Job description :**  "
+                          },
+                          {
+                            "variable": "step_651_result_3",
+                            "variable_path": "body.description"
+                          },
+                          {
+                            "scalar": "\n\n**Job Status :** "
+                          },
+                          {
+                            "variable": "step_651_result_3",
+                            "variable_path": "body.status"
+                          },
+                          {
+                            "scalar": "\n\n**pluscrevnum** :"
+                          },
+                          {
+                            "variable": "step_651_result_3",
+                            "variable_path": "body.pluscrevnum"
+                          },
+                          {
+                            "scalar": "\n\n**jobplanid:** "
+                          },
+                          {
+                            "variable": "step_651_result_3",
+                            "variable_path": "body.jobplanid"
+                          },
+                          {
+                            "scalar": "\n\nJob details fetched."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_419",
+            "condition": {
+              "and": [
+                {
+                  "exists": {
+                    "variable": "step_470"
+                  }
+                },
+                {
+                  "contains": [
+                    {
+                      "variable": "step_651_result_3",
+                      "variable_path": "body.status"
+                    },
+                    {
+                      "scalar": "Active",
+                      "options": {
+                        "ignore_case": true
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "next_step": "step_483"
+          },
+          {
+            "step": "step_483",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Do you want to split/update the job task description ?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Yes",
+                      "value": {
+                        "input": {
+                          "text": "Yes"
+                        }
+                      }
+                    },
+                    {
+                      "label": "No",
+                      "value": {
+                        "input": {
+                          "text": "No"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I'm sorry, I did not catch that, please restate your response."
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "sys-yes-no",
+              "max_tries": 3,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_483",
+            "condition": {
+              "matches": [
+                {
+                  "variable": "step_651_result_3",
+                  "variable_path": "body.status"
+                },
+                {
+                  "scalar": "Active",
+                  "options": {
+                    "ignore_case": true
+                  }
+                }
+              ]
+            },
+            "next_step": "step_111"
+          },
+          {
+            "step": "step_111",
+            "output": {
+              "generic": []
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "('[INST] __grounding__<<SYS>>\nYou are a professional task breakdown assistant.\n\nYour job is to convert a long, detailed job description into a **short list of meaningful, clear tasks**.\n\nStrict rules to follow:\n- Each task must be unique and under 100 characters.\n- DO NOT split every small item into a separate task. \n- Combine related checks into logical steps.\n- Avoid repeating the same type of check in multiple tasks.\n\nFormat your response like:\nTask 1: ...\nTask 2: ...\n...\n\nJob Description:  ${step_651_result_3.body.description}\n<</SYS>> [/INST]')"
+                  },
+                  "skill_variable": "split_task"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_111",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_483"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_828"
+          },
+          {
+            "step": "step_828",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Thanks for the response ."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_828",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_483"
+                },
+                {
+                  "scalar": "no"
+                }
+              ]
+            },
+            "next_step": "step_356"
+          },
+          {
+            "step": "step_356",
+            "output": {
+              "generic": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/ml/v1/text/generation",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": "3408d5415323ca392bb94b1fdfd03f6259f0ff1e35a65e5750e2740ba2908435",
+                  "match_scenario": 10,
+                  "catalog_item_id": "ceab12a1-ef91-45ff-8fdc-d12707de4326"
+                },
+                "request_mapping": {
+                  "body": [
+                    {
+                      "value": {
+                        "expression": "${split_task}"
+                      },
+                      "parameter": "input"
+                    },
+                    {
+                      "value": {
+                        "scalar": "ibm/granite-3-8b-instruct"
+                      },
+                      "parameter": "model_id"
+                    },
+                    {
+                      "value": {
+                        "scalar": "8ac29562-d8a4-4616-b69d-b4f3217fc1da"
+                      },
+                      "parameter": "project_id"
+                    },
+                    {
+                      "value": {
+                        "scalar": 500
+                      },
+                      "parameter": "parameters.max_new_tokens"
+                    },
+                    {
+                      "value": {
+                        "scalar": 0
+                      },
+                      "parameter": "parameters.min_new_tokens"
+                    },
+                    {
+                      "value": {
+                        "scalar": 1
+                      },
+                      "parameter": "parameters.repetition_penalty"
+                    }
+                  ],
+                  "query": [
+                    {
+                      "value": {
+                        "scalar": "2023-05-29"
+                      },
+                      "parameter": "version"
+                    }
+                  ]
+                },
+                "result_variable": "step_356_result_1"
+              }
+            },
+            "variable": "step_356",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_483"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_610"
+          },
+          {
+            "step": "step_610",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Jobs splitted  : "
+                          },
+                          {
+                            "skill_variable": "split_output"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "${step_356_result_1.body.results}[0].generated_text"
+                  },
+                  "skill_variable": "split_output"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_610",
+            "condition": {
+              "and": [
+                {
+                  "eq": [
+                    {
+                      "variable": "step_483"
+                    },
+                    {
+                      "scalar": "yes"
+                    }
+                  ]
+                },
+                {
+                  "eq": [
+                    {
+                      "variable": "step_356_result_1",
+                      "variable_path": "success"
+                    },
+                    {
+                      "scalar": true
+                    }
+                  ]
+                }
+              ]
+            },
+            "next_step": "step_493"
+          },
+          {
+            "step": "step_493",
+            "output": {
+              "generic": []
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "('[INST] __grounding__<<SYS>>\nYou are formatting a list of tasks into a Maximo job plan JSON object using the mxapijobplan object structure.\n\nGiven the following list of tasks, convert each into a `jobtask` entry using the JSON template below.  \nEach task must become a separate `jobtask` item.\n\nUse this template:\n{\n  \"jpnum\":  \"${step_651_result_3.body.jpnum}\" ,\n  \"jobplanid\": \"${step_651_result_3.body.jobplanid}\",\n  \"siteid\": \"BEDFORD\",\n  \"description\": \"Generated job plan\",\n  \"jobtask\": [\n    {\n      \"jptask\": \"10\",\n      \"pluscjprevnum\": ${step_651_result_3.body.pluscrevnum} ,\n      \"description\": \"task 1\"\n    }\n  ]\n}\n\nRules:\n-jpnum and jobplanid   is the input paramerters .\n- Start `jptask` at **10** and increment by **10** for each task (e.g., 10, 20, 30...).\n- Use the **same value of `pluscjprevnum` for all tasks**. It is a static value passed in and must not be changed.\n- Do NOT increment or modify `pluscjprevnum`. Just copy the value exactly as provided.\n- Each `jobtask.description` must describe a **precise technical action** (≤100 characters).\n- Avoid vague verbs like “check” or “verify”. Be specific about what should be done (e.g., \"Measure tire pressure using gauge\").\n- Assume the technician is reading this on a mobile device.\n- Only return valid JSON. Do NOT include any extra text or explanation.\n\nTasks: ${split_output} \n<</SYS>> [/INST]')"
+                  },
+                  "skill_variable": "model_input"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_493",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_483"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_609"
+          },
+          {
+            "step": "step_609",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Processing your request through AI integration"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/ml/v1/text/generation",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": "3408d5415323ca392bb94b1fdfd03f6259f0ff1e35a65e5750e2740ba2908435",
+                  "match_scenario": 10,
+                  "catalog_item_id": "ceab12a1-ef91-45ff-8fdc-d12707de4326"
+                },
+                "request_mapping": {
+                  "body": [
+                    {
+                      "value": {
+                        "expression": "${model_input}"
+                      },
+                      "parameter": "input"
+                    },
+                    {
+                      "value": {
+                        "scalar": "ibm/granite-3-8b-instruct"
+                      },
+                      "parameter": "model_id"
+                    },
+                    {
+                      "value": {
+                        "scalar": "8ac29562-d8a4-4616-b69d-b4f3217fc1da"
+                      },
+                      "parameter": "project_id"
+                    },
+                    {
+                      "value": {
+                        "scalar": 800
+                      },
+                      "parameter": "parameters.max_new_tokens"
+                    },
+                    {
+                      "value": {
+                        "scalar": 0
+                      },
+                      "parameter": "parameters.min_new_tokens"
+                    },
+                    {
+                      "value": {
+                        "scalar": 1
+                      },
+                      "parameter": "parameters.repetition_penalty"
+                    }
+                  ],
+                  "query": [
+                    {
+                      "value": {
+                        "scalar": "2023-05-29"
+                      },
+                      "parameter": "version"
+                    }
+                  ]
+                },
+                "result_variable": "step_609_result_1"
+              }
+            },
+            "variable": "step_609",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_483"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_602"
+          },
+          {
+            "step": "step_602",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Response : "
+                          },
+                          {
+                            "skill_variable": "model_output"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "${step_609_result_1.body.results}[0].generated_text"
+                  },
+                  "skill_variable": "model_output"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_602",
+            "condition": {
+              "and": [
+                {
+                  "eq": [
+                    {
+                      "variable": "step_609_result_1",
+                      "variable_path": "success"
+                    },
+                    {
+                      "scalar": true
+                    }
+                  ]
+                },
+                {
+                  "eq": [
+                    {
+                      "variable": "step_483"
+                    },
+                    {
+                      "scalar": "yes"
+                    }
+                  ]
+                }
+              ]
+            },
+            "next_step": "step_631"
+          },
+          {
+            "step": "step_631",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Do you want update in Maximo with above steps ?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Yes",
+                      "value": {
+                        "input": {
+                          "text": "Yes"
+                        }
+                      }
+                    },
+                    {
+                      "label": "No",
+                      "value": {
+                        "input": {
+                          "text": "No"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I'm sorry, I did not catch that, please restate your response."
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "sys-yes-no",
+              "max_tries": 3,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_631",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_483"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_873"
+          },
+          {
+            "step": "step_873",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Thanks for the response."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_873",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_631"
+                },
+                {
+                  "scalar": "no"
+                }
+              ]
+            },
+            "next_step": "step_524"
+          },
+          {
+            "step": "step_524",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Update  the status to Pending ?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Yes",
+                      "value": {
+                        "input": {
+                          "text": "Yes"
+                        }
+                      }
+                    },
+                    {
+                      "label": "No",
+                      "value": {
+                        "input": {
+                          "text": "No"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I'm sorry, I did not catch that, please restate your response."
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "sys-yes-no",
+              "max_tries": 3,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_524",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_631"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_249"
+          },
+          {
+            "step": "step_249",
+            "output": {
+              "generic": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/update-jobplan-status",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": "1459fa6afc457218932ef12424c9aa69144bc7be3da12e6e34d0127d02abc808",
+                  "match_scenario": 10,
+                  "catalog_item_id": "b4d4d918-13a9-417b-8ef4-3bb4524a93c1"
+                },
+                "request_mapping": {
+                  "body": [
+                    {
+                      "value": {
+                        "scalar": "PNDREV"
+                      },
+                      "parameter": "status"
+                    },
+                    {
+                      "value": {
+                        "scalar": "updating status to pending"
+                      },
+                      "parameter": "pluscrevcom"
+                    },
+                    {
+                      "value": {
+                        "variable": "step_651_result_3",
+                        "variable_path": "body.pluscrevnum"
+                      },
+                      "parameter": "pluscrevnum"
+                    },
+                    {
+                      "value": {
+                        "variable": "step_651_result_3",
+                        "variable_path": "body.jobplanid"
+                      },
+                      "parameter": "jobplanid"
+                    }
+                  ]
+                },
+                "result_variable": "step_249_result_1"
+              }
+            },
+            "variable": "step_249",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_524"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_377"
+          },
+          {
+            "step": "step_377",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Updated status :"
+                          },
+                          {
+                            "variable": "step_249_result_1",
+                            "variable_path": "body.maximo_response.status"
+                          },
+                          {
+                            "scalar": "\n\nJobplanid : "
+                          },
+                          {
+                            "variable": "step_249_result_1",
+                            "variable_path": "body.jobplanid"
+                          },
+                          {
+                            "scalar": "\nstatus description : "
+                          },
+                          {
+                            "variable": "step_249_result_1",
+                            "variable_path": "body.maximo_response.status_description"
+                          },
+                          {
+                            "scalar": "\n\n\n\n"
+                          },
+                          {
+                            "variable": "step_249_result_1",
+                            "variable_path": "body.message"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_377",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_249_result_1",
+                  "variable_path": "success"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_858"
+          },
+          {
+            "step": "step_858",
+            "output": {
+              "generic": []
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "${model_output}.replaceAll(\"```json\", \"\")\n.replaceAll(\"```\", \"\")\n.replaceAll(\"\\\\n\", \"\")\n.replaceAll(\"\\\\\\\"\", \"\\\"\")\n.replaceAll(\"\\\"{\", \"{\")\n.replaceAll(\"}\\\"\", \"}\")\n.replaceAll('\"', '\\\\\"')\n.replaceAll('\\n', '')"
+                  },
+                  "skill_variable": "final_output"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/update-job-tasks",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": "9e019be43e05734190b04e9f6e45bdebaf743b0426af59dacdaa3196a9d013a2",
+                  "match_scenario": 10,
+                  "catalog_item_id": "e6a79995-34cd-44cf-8223-defec2865318"
+                },
+                "request_mapping": {
+                  "body": [
+                    {
+                      "value": {
+                        "expression": "${final_output}"
+                      },
+                      "parameter": "body"
+                    }
+                  ]
+                },
+                "result_variable": "step_858_result_2"
+              }
+            },
+            "variable": "step_858",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_249_result_1",
+                  "variable_path": "success"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_234"
+          },
+          {
+            "step": "step_234",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": ""
+                          },
+                          {
+                            "variable": "step_858_result_2",
+                            "variable_path": "body.message"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_234",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_858_result_2",
+                  "variable_path": "success"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_282"
+          },
+          {
+            "step": "step_282",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Updating status to Active"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/update-jobplan-status",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": "1459fa6afc457218932ef12424c9aa69144bc7be3da12e6e34d0127d02abc808",
+                  "match_scenario": 10,
+                  "catalog_item_id": "b4d4d918-13a9-417b-8ef4-3bb4524a93c1"
+                },
+                "request_mapping": {
+                  "body": [
+                    {
+                      "value": {
+                        "scalar": "Active"
+                      },
+                      "parameter": "status"
+                    },
+                    {
+                      "value": {
+                        "variable": "step_651_result_3",
+                        "variable_path": "body.jobplanid"
+                      },
+                      "parameter": "jobplanid"
+                    },
+                    {
+                      "value": {
+                        "scalar": "Updating status to Active"
+                      },
+                      "parameter": "pluscrevcom"
+                    },
+                    {
+                      "value": {
+                        "variable": "step_651_result_3",
+                        "variable_path": "body.pluscrevnum"
+                      },
+                      "parameter": "pluscrevnum"
+                    }
+                  ]
+                },
+                "result_variable": "step_282_result_1"
+              }
+            },
+            "variable": "step_282",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_858_result_2",
+                  "variable_path": "success"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_181"
+          },
+          {
+            "step": "step_181",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Updated status :"
+                          },
+                          {
+                            "variable": "step_282_result_1",
+                            "variable_path": "body.maximo_response.status"
+                          },
+                          {
+                            "scalar": "\n\nJobplanid : "
+                          },
+                          {
+                            "variable": "step_282_result_1",
+                            "variable_path": "body.jobplanid"
+                          },
+                          {
+                            "scalar": "\nstatus description : "
+                          },
+                          {
+                            "variable": "step_282_result_1",
+                            "variable_path": "body.maximo_response.status_description"
+                          },
+                          {
+                            "scalar": "\n\n\n\n"
+                          },
+                          {
+                            "variable": "step_282_result_1",
+                            "variable_path": "body.message"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_181",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_282_result_1",
+                  "variable_path": "success"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            }
+          }
+        ],
+        "title": "retrive_job",
+        "action": "action_40512",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "action_40512_intent_20277"
+        },
+        "variables": [
+          {
+            "title": "",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_111",
+            "data_type": "any"
+          },
+          {
+            "title": "Updated status :{variable} Jobplanid : {variable} status descrip",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_181",
+            "data_type": "any"
+          },
+          {
+            "title": "{variable}",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_234",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_249",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_249_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "Updating status to Active",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_282",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_282_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_356",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_356_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "Job plan is not active. Please enter active job plan .",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_373",
+            "data_type": "any"
+          },
+          {
+            "title": "Updated status :{variable} Jobplanid : {variable} status descrip",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_377",
+            "data_type": "any"
+          },
+          {
+            "title": "**Job plan number** : {variable} **Job description :** {variable",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_419",
+            "data_type": "any"
+          },
+          {
+            "title": "Enter job plan number ?",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_470",
+            "data_type": "any"
+          },
+          {
+            "title": "Do you want to split/update the job task description ?",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_483",
+            "data_type": "yes_no"
+          },
+          {
+            "title": "",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_493",
+            "data_type": "any"
+          },
+          {
+            "title": "Update the status to Pending ?",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_524",
+            "data_type": "yes_no"
+          },
+          {
+            "title": "Response : {variable}",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_602",
+            "data_type": "any"
+          },
+          {
+            "title": "Processing your request through AI integration",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_609",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_609_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "Jobs splitted : {variable}",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_610",
+            "data_type": "any"
+          },
+          {
+            "title": "Do you want update in Maximo with above steps ?",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_631",
+            "data_type": "yes_no"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_651",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_651_result_1",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_651_result_3",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks for the response .",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_828",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_858",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_858_result_2",
+            "data_type": "any"
+          },
+          {
+            "title": "Thanks for the response.",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_873",
+            "data_type": "any"
+          }
+        ],
+        "launch_mode": "learning",
+        "next_action": "fallback",
+        "display_name": "",
+        "topic_switch": {
+          "allowed_from": true,
+          "allowed_into": true,
+          "never_return": false
+        },
+        "disambiguation_opt_out": false
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_417",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "I did not understand, Please reframe your question\nEx: get  job details ?, i want to fetch job plan details ?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_417",
+            "next_step": "step_558"
+          },
+          {
+            "step": "step_558",
+            "handlers": [],
+            "resolver": {
+              "type": "invoke_another_action_and_end",
+              "invoke_action": {
+                "action": "action_40512",
+                "policy": "default",
+                "parameters": null,
+                "result_variable": "step_558_result_1"
+              }
+            },
+            "variable": "step_558",
+            "next_step": "step_001"
+          },
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "I'm afraid I don't understand. Please rephrase your question."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_001",
+            "condition": {
+              "lte": [
+                {
+                  "system_variable": "no_action_matches_count"
+                },
+                {
+                  "scalar": "1"
+                }
+              ]
+            },
+            "next_step": "step_002"
+          },
+          {
+            "step": "step_002",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": ""
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "invoke_another_action_and_end",
+              "invoke_action": {
+                "action": "fallback",
+                "policy": "default",
+                "parameters": null,
+                "result_variable": "step_002_result_1"
+              }
+            },
+            "variable": "step_002",
+            "condition": {
+              "gt": [
+                {
+                  "system_variable": "no_action_matches_count"
+                },
+                {
+                  "scalar": 3
+                }
+              ]
+            }
+          }
+        ],
+        "title": "No action matches",
+        "action": "anything_else",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "expression": "anything_else"
+        },
+        "variables": [
+          {
+            "title": "I am afraid I do not understand what you are asking, please re-p",
+            "variable": "step_001",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_002",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_002_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "I did not understand, Please reframe your question Ex: get job d",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_417",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_558",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_558_result_1",
+            "data_type": "any"
+          }
+        ],
+        "disambiguation_opt_out": true
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "digression_failure",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "Sorry I couldn't confirm if you wanted to return to previous topic, let me connect to an agent."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "digression_failure",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Failed to confirm topic return"
+                }
+              ]
+            },
+            "next_step": "step_001"
+          },
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "I'm afraid I don't understand. I can connect you to an agent."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_001",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Step validation failed"
+                }
+              ]
+            },
+            "next_step": "step_002"
+          },
+          {
+            "step": "step_002",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "Sorry I couldn't assist you. I will connect you to an agent right away."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_002",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Agent requested"
+                }
+              ]
+            },
+            "next_step": "step_003"
+          },
+          {
+            "step": "step_003",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "I am afraid I do not understand what you are asking, let me connect you to an agent."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_003",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "No action matches"
+                }
+              ]
+            },
+            "next_step": "step_004"
+          },
+          {
+            "step": "step_004",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "It seems this conversation would be best managed by a human agent. Let me connect you to one of our agents."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_004",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Danger word detected"
+                }
+              ]
+            },
+            "next_step": "step_005"
+          },
+          {
+            "step": "step_005",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "It seems this conversation would be best managed by a human agent. Let me connect you to one of our agents."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_005",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Profanity detected"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Fallback",
+        "action": "fallback",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "fallback_connect_to_agent"
+        },
+        "variables": [
+          {
+            "title": "Topic return failed",
+            "variable": "digression_failure",
+            "data_type": "any"
+          },
+          {
+            "title": "I'm afraid I don't understand. I can connect you to an agent.",
+            "variable": "step_001",
+            "data_type": "any"
+          },
+          {
+            "title": "Sorry I couldn't assist you. I will connect you to an agent righ",
+            "variable": "step_002",
+            "data_type": "any"
+          },
+          {
+            "title": "I am afraid I do not understand what you are asking, let me conn",
+            "variable": "step_003",
+            "data_type": "any"
+          },
+          {
+            "title": "It seems this conversation would be best managed",
+            "variable": "step_004",
+            "data_type": "any"
+          },
+          {
+            "title": "Profanity - It seems this conversation",
+            "variable": "step_005",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "run_always",
+        "disambiguation_opt_out": true
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "danger_word_detected",
+            "title": "Connect to agent",
+            "handlers": [],
+            "resolver": {
+              "type": "fallback"
+            },
+            "variable": "danger_word_detected_variable",
+            "condition": {
+              "entity": "danger_words"
+            },
+            "next_step": "profanity_detected"
+          },
+          {
+            "step": "profanity_detected",
+            "title": "Show warning",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Please use appropriate language when interacting with the assistant."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "max_hits",
+                "handler": "max_hits_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "max_hits": 2,
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "profanity_detected_variable",
+            "condition": {
+              "entity": "profane_words"
+            }
+          }
+        ],
+        "title": "Trigger word detected",
+        "action": "run_always",
+        "boosts": [],
+        "handlers": [],
+        "variables": [
+          {
+            "title": "Profanity detected",
+            "variable": "danger_word_detected_variable",
+            "data_type": "any"
+          },
+          {
+            "title": "Profane word detected",
+            "variable": "profanity_detected_variable",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "anything_else"
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "Welcome, how can I assist you?"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_001"
+          }
+        ],
+        "title": "Greet customer",
+        "action": "welcome",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "expression": "welcome"
+        },
+        "variables": [
+          {
+            "variable": "step_001",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "action_40512",
+        "disambiguation_opt_out": true
+      }
+    ],
+    "intents": [
+      {
+        "intent": "action_40512_intent_20277",
+        "examples": [
+          {
+            "text": "get job details ?"
+          },
+          {
+            "text": "get job plan details"
+          },
+          {
+            "text": "i want to fetch job plan details"
+          },
+          {
+            "text": "search for job"
+          },
+          {
+            "text": "update the job plan details"
+          }
+        ]
+      },
+      {
+        "intent": "fallback_connect_to_agent",
+        "examples": [
+          {
+            "text": "Agent help"
+          },
+          {
+            "text": "Call agent"
+          }
+        ],
+        "description": "Please transfer me to an agent"
+      }
+    ],
+    "entities": [
+      {
+        "entity": "danger_words",
+        "values": [],
+        "fuzzy_match": false
+      },
+      {
+        "entity": "profane_words",
+        "values": [],
+        "fuzzy_match": false
+      },
+      {
+        "entity": "sys-yes-no",
+        "values": []
+      }
+    ],
+    "metadata": {
+      "api_version": {
+        "major_version": "v2",
+        "minor_version": "2018-11-08"
+      }
+    },
+    "variables": [
+      {
+        "title": "final_output",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "final_output",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "model_input",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "model_input",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "model_output",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "model_output",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "split_output",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "split_output",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "split_task",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "split_task",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "test",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "test",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "user input",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "user_input",
+        "data_type": "string",
+        "description": ""
+      }
+    ],
+    "data_types": [],
+    "collections": [],
+    "counterexamples": [],
+    "system_settings": {
+      "nlp": {
+        "model": "latest"
+      },
+      "variable": {
+        "format": {
+          "time": {
+            "pattern": "short"
+          },
+          "currency": {
+            "fraction_digits": 2
+          }
+        }
+      },
+      "off_topic": {
+        "enabled": true
+      },
+      "topic_switch": {
+        "enabled": true,
+        "messages": {
+          "enable_confirmation": true,
+          "confirmation_failure": {
+            "generic": [
+              {
+                "values": [
+                  {
+                    "text_expression": {
+                      "concat": [
+                        {
+                          "scalar": "I'm sorry, I did not catch that, please confirm."
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "response_type": "text",
+                "selection_policy": "sequential"
+              }
+            ]
+          },
+          "confirmation_request": {
+            "generic": [
+              {
+                "values": [
+                  {
+                    "text_expression": {
+                      "concat": [
+                        {
+                          "scalar": "Do you want to continue with the previous topic: "
+                        },
+                        {
+                          "system_variable": "digressed_from"
+                        },
+                        {
+                          "scalar": "?"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "response_type": "text",
+                "selection_policy": "sequential"
+              },
+              {
+                "options": [
+                  {
+                    "label": "Yes",
+                    "value": {
+                      "input": {
+                        "text": "Yes"
+                      }
+                    }
+                  },
+                  {
+                    "label": "No",
+                    "value": {
+                      "input": {
+                        "text": "No"
+                      }
+                    }
+                  }
+                ],
+                "response_type": "option",
+                "repeat_on_reprompt": true
+              }
+            ]
+          }
+        },
+        "max_tries": 3
+      },
+      "generative_ai": {
+        "model_id": "ibm/granite-3-8b-instruct"
+      },
+      "disambiguation": {
+        "prompt": "Did you mean:",
+        "enabled": true,
+        "randomize": true,
+        "max_suggestions": 5,
+        "suggestion_text_policy": "title",
+        "none_of_the_above_prompt": "None of the above",
+        "use_connect_to_support_prompt": "connect to support",
+        "single_answer_clarification_prompt": "Something else"
+      },
+      "spelling_auto_correct": true
+    },
+    "learning_opt_out": true
+  },
+  "description": "created for assistant 1c76effb-2430-4334-8897-6cdad3c6282b",
+  "assistant_id": "2b46d6bd-8d15-4607-a840-607021daface",
+  "workspace_id": "3a6eff0f-3f37-4611-bd59-0602fa3cdce0",
+  "dialog_settings": {},
+  "next_snapshot_version": "1",
+  "environment_id": "15020637-1327-4435-b7c0-581c88b3a659"
+}

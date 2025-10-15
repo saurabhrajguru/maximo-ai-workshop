@@ -1,0 +1,225 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Get Maximo Job Plan Details",
+    "version": "1.0.0",
+    "description": "Calls Maximo REST API to retrieve job plan details using the MXAPIJOBPLAN object. The job plan is fetched based on provided jpnum and status values from Watson Assistant."
+  },
+  "servers": [
+    {
+      "url": "http://maximo-optimize-jobplan-route-maximo-lab2.apps.68e7b6dc72e06a9c307a9ded.am1.techzone.ibm.com"
+    }
+  ],
+  "paths": {
+    "/get-jobplan": {
+      "get": {
+        "summary": "Get Job Plan Details",
+        "description": "Retrieve job plan details from Maximo based on jpnum and optional status query parameters.",
+        "parameters": [
+          {
+            "name": "jpnum",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Job plan number to retrieve"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional job plan status filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job plan fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jpnum": {
+                      "type": "string",
+                      "description": "Job plan number"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Job plan status"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Job plan description"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Success message"
+                    },
+                    "pluscrevnum": {
+                      "type": "integer",
+                      "description": "Job plan revision number"
+                    },
+                    "jobplanid": {
+                      "type": "integer",
+                      "description": "Unique internal ID of the job plan"
+                    }
+                  },
+                  "required": ["jpnum", "status", "description", "message","pluscrevnum","jobplanid"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid query parameters"
+          },
+          "500": {
+            "description": "Server error while retrieving job plan"
+          }
+        }
+      }
+    },
+    "/update-job-tasks": {
+      "post": {
+        "summary": "update Job Plan",
+        "description": "update a job plan in Maximo using full JSON body from Watson Assistant action.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "object",
+                    "description": "body"
+                  }
+                },
+                "required": [
+                  "body"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Job plan tasks updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Job plan tasks updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/update-jobplan-status": {
+      "post": {
+        "summary": "Update job plan status",
+        "description": "Updates the job plan status, pluscrevnum, and pluscrevcom based on jobplanid.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "jobplanid": {
+                    "type": "integer",
+                    "description": "The numeric job plan ID to update"
+                  },
+                  "pluscrevcom": {
+                    "type": "string",
+                    "description": "Revision comment"
+                  },
+                  "pluscrevnum": {
+                    "type": "integer",
+                    "description": "Revision number"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "New job plan status"
+                  }
+                },
+                "required": [
+                  "jobplanid",
+                  "pluscrevcom",
+                  "pluscrevnum",
+                  "status"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Job plan updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jobplanid": {
+                      "type": "integer"
+                    },
+                    "maximo_response": {
+                      "type": "object",
+                      "properties": {
+                        "jpnum": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "status_description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "jpnum",
+                        "status",
+                        "status_description"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "jobplanid",
+                    "maximo_response",
+                    "message"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  }
+}
