@@ -1,0 +1,43 @@
+
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Get Maximo Asset Health",
+    "description": "Get Maximo Asset Health",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://maximo-agents-route-maximo-lab2.apps.68e7b6dc72e06a9c307a9ded.am1.techzone.ibm.com"
+    }
+  ],
+  "paths": {
+    "/get-asset/{assetnum}": {
+      "get": {
+        "summary": "Get asset health by asset number",
+        "parameters": [
+          {
+            "name": "assetnum",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Asset number to fetch health info"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset health retrieved successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

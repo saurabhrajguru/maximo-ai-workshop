@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Maximo Asset Health API",
+    "description": "Fetches asset health details from Maximo for a given site ID",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://maximo-agents-route-maximo-lab2.apps.68e7b6dc72e06a9c307a9ded.am1.techzone.ibm.com"
+    }
+  ],
+  "paths": {
+    "/get_asset_health_by_siteid/{siteid}": {
+      "get": {
+        "summary": "Get asset health by site ID",
+        "description": "Returns asset health data from Maximo for all assets associated with the given site ID.",
+        "parameters": [
+          {
+            "name": "siteid",
+            "in": "path",
+            "required": true,
+            "description": "The site ID to fetch assets for",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved asset health data",
+            "content": {
+              "application/json": {
+                "example": {
+                  "member": [
+                    {
+                      "assetnum": "11430",
+                      "description": "Pump Motor",
+                      "status": "OPERATING",
+                      "assethealth": 87.5,
+                      "siteid": "BEDFORD",
+                      "location": {
+                        "location": "PLANT1"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Site ID is missing or invalid"
+          },
+          "500": {
+            "description": "Server error or Maximo response issue"
+          }
+        }
+      }
+    }
+  }
+}

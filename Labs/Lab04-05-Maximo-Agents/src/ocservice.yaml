@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: maximo-agents-service
+  namespace: maximo-lab2
+spec:
+  selector:
+    app: maximo-agents
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: ClusterIP

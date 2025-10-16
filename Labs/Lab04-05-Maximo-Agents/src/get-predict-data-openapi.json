@@ -1,0 +1,128 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Asset Predictive Maintenance API",
+    "description": "API for retrieving predictive failure and maintenance data for industrial assets.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://maximo-agents-route-maximo-lab2.apps.68e7b6dc72e06a9c307a9ded.am1.techzone.ibm.com",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/get_asset_predict_data/{asset_number}": {
+      "get": {
+        "summary": "get_predict_data",
+        "description": "Retrieves prediction data for the specified asset number or alias.",
+        "parameters": [
+          {
+            "name": "asset_number",
+            "in": "path",
+            "required": true,
+            "description": "The asset number or alias to retrieve predictive data for",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with asset prediction data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetPrediction"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Asset not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WorkOrder": {
+        "type": "object",
+        "properties": {
+          "wo_id": { "type": "string" },
+          "date": { "type": "string", "format": "date" },
+          "type": { "type": "string" },
+          "issue": { "type": "string" }
+        }
+      },
+      "PreventiveMaintenance": {
+        "type": "object",
+        "properties": {
+          "pm_id": { "type": "string" },
+          "task": { "type": "string" },
+          "scheduled_date": { "type": "string", "format": "date" },
+          "actual_date": { "type": "string", "format": "date" },
+          "status": { "type": "string" }
+        }
+      },
+      "AssetPrediction": {
+        "type": "object",
+        "properties": {
+          "asset_number": { "type": "string" },
+          "alias": { "type": "string" },
+          "description": { "type": "string" },
+          "predicted_failure_date": { "type": "string", "format": "date" },
+          "weeks_to_failure": { "type": "integer" },
+          "time_to_failure": { "type": "string" },
+          "predicted_remaining_life": { "type": "string" },
+          "end_of_life_score": { "type": "integer" },
+          "last_prediction_date": { "type": "string", "format": "date" },
+          "prediction_method": { "type": "string" },
+          "repair_cost": { "type": "string" },
+          "replacement_cost": { "type": "string" },
+          "historical_failures": { "type": "integer" },
+          "work_orders": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WorkOrder" }
+          },
+          "preventive_maintenance": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PreventiveMaintenance" }
+          }
+        },
+        "required": ["asset_number", "description", "predicted_failure_date"]
+      }
+    }
+  }
+}
