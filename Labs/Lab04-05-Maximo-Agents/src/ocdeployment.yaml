@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maximo-agents
+  namespace: maximo-lab2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: maximo-agents
+  template:
+    metadata:
+      labels:
+        app: maximo-agents
+    spec:
+      containers:
+        - name: maximo-agents
+          image: saurabhrajguru1/maximo-agents:latest
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - secretRef:
+                name: maximo-env-secret
