@@ -7,7 +7,7 @@
     },
     "servers": [
       {
-        "url": "http://create-jobplan-maximo-flask.apps.68e7b6dc72e06a9c307a9ded.am1.techzone.ibm.com"
+        "url": "http://maximo-jobplan-route-maximo-lab2.itzroks-663003cr67-9bxuk2-e9af4724cbeb0cbcaabe4c6c7f17d8f1-0000.eu-gb.containers.appdomain.cloud"
       }
     ],
     "paths": {
